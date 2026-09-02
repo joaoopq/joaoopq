@@ -15,4 +15,4 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-![joaoopq](game.gif)
+![GitHub Space Shooter](./gh-space-shooter.gif)
