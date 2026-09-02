@@ -38,6 +38,7 @@ jobs:
             git commit --amend -m "Update space shooter animation" --allow-empty
             git push --force
           else
+            --allow-empty
             git commit -m "Update space shooter animation"
             git push
           fi
