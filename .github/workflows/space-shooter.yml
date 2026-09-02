@@ -33,12 +33,12 @@ jobs:
           git config --local user.name "GitHub Action"
           git add gh-space-shooter.gif
           
-          # Se o commit anterior foi gerado pela action, altera ele (comportamento padrão v2)
+          # Se o commit anterior foi gerado pela action, altera ele
           if [ "$(git log -1 --pretty=%s)" = "Update space shooter animation" ]; then
             git commit --amend -m "Update space shooter animation" --allow-empty
             git push --force
           else
-            --allow-empty
-            git commit -m "Update space shooter animation"
+            # O --allow-empty aqui evita o erro se o GIF for idêntico ao atual
+            git commit -m "Update space shooter animation" --allow-empty
             git push
           fi
