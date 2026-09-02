@@ -1,0 +1,43 @@
+name: Generate Space Shooter
+
+on:
+  # Roda automaticamente todos os dias à meia-noite
+  schedule:
+    - cron: "0 0 * * *"
+  # Permite que você execute manualmente pela aba Actions
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # O checkout precisa de fetch-depth: 2 para que o "no-amend: false" da v2 funcione corretamente
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Generate Game GIF
+        uses: czl9707/gh-space-shooter@v2
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          # Opcional: mude para 'row' ou 'column' se preferir outro padrão de ataque
+          strategy: random 
+          fps: 40
+
+      - name: Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add gh-space-shooter.gif
+          
+          # Se o commit anterior foi gerado pela action, altera ele (comportamento padrão v2)
+          if [ "$(git log -1 --pretty=%s)" = "Update space shooter animation" ]; then
+            git commit --amend -m "Update space shooter animation" --allow-empty
+            git push --force
+          else
+            git commit -m "Update space shooter animation"
+            git push
+          fi
